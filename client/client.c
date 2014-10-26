@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "streamsock.h"
-#include "socket_def.h"
+#include "../libs/streamsock.h"
+#include "../include/socket_def.h"
 
 void send_data_test(data_t *data)
 {

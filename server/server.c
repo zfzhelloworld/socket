@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "streamsock.h"
-#include "socket_def.h"
+#include "../libs/streamsock.h"
+#include "../include/socket_def.h"
 
 static long timeout = 500; /*default socket timeout at 500 ms */
 
