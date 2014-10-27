@@ -3,9 +3,11 @@
 #include <string.h>
 #include "../libs/streamsock.h"
 #include "../include/socket_def.h"
+#include "main_logic.h"
 
 static long timeout = 500; /*default socket timeout at 500 ms */
 
+play_room_t play_room;
 streamsock_t sock_g;
 
 int init()
@@ -19,6 +21,9 @@ int init()
 		printf("can't change socket permissions\n");
 		return -2;
 	}
+	
+	init_play_room(&play_room);
+	
 	return 0;
 }
 
@@ -31,8 +36,9 @@ void fini()
 static void
 process_request(streamsock_t sock, void *arg)
 {
-	data_t data;
+	sock_hdr_t sock_hdr;
 	int rc;
+
 	
 	if ((rc = streamsock_set_timeout(sock, timeout, 1)) != 0) {
 		printf("unable to set socket timeout. rc = %d\n", rc);
@@ -42,11 +48,19 @@ process_request(streamsock_t sock, void *arg)
 		printf("unable to set socket timeout. rc = %d\n", rc);
 	}
 
-	if (streamsock_read(sock, &data, sizeof(data)) == sizeof(data)) {
-		printf("Get num from data: %d\n", data.num);
-		printf("Get buff from data: %s\n", data.buff);
+	if (streamsock_read(sock, &sock_hdr, sizeof(sock_hdr)) == sizeof(sock_hdr)) {
 		
-		rc = streamsock_write(sock, &data, sizeof(data));
+		printf("UserId: [%s], Operation: [%d] AttackType: [%d]\n", 
+				sock_hdr.user_id, sock_hdr.operation, sock_hdr.attack_type);
+		switch (sock_hdr.operation) {
+			case REGIST:
+				register_user(sock_hdr, &play_room);
+				break;
+			case ATTACK:
+				handle_attack(sock_hdr, &play_room);
+				show_player_info(play_room);
+				break;
+		}
 
 		return;
 	}
