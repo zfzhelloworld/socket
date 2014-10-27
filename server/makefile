@@ -8,4 +8,4 @@ main_logic.o : main_logic.c
 	gcc -c main_logic.c
 
 clean:
-	rm server server.o streamsock.o
+	rm server server.o streamsock.o main_logic.o

@@ -51,6 +51,7 @@ int make_attack(sock_hdr_t hdr, player_t *player)
 			}
 			break;
 	}
+	return 0;
 }
 
 int handle_attack(sock_hdr_t sock_hdr, play_room_t *room)
@@ -61,6 +62,7 @@ int handle_attack(sock_hdr_t sock_hdr, play_room_t *room)
 	} else {
 		make_attack(sock_hdr, &(room->player_a));
 	}
+	return 0;
 }
 
 void show_player_info(play_room_t room)
@@ -72,7 +74,7 @@ void show_player_info(play_room_t room)
 	printf("Player A User: [%s] Life Score: [%d]\n", 
 			p_t.user_id, p_t.life_score);
 	p_t = room.player_b;
-	printf("Player A User: [%s] Life Score: [%d]\n", 
+	printf("Player B User: [%s] Life Score: [%d]\n", 
 			p_t.user_id, p_t.life_score);
 	printf("---------------------End-----------------------\n");
 }
